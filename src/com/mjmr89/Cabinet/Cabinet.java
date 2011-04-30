@@ -20,6 +20,7 @@ public class Cabinet extends JavaPlugin
   	final Server server = getServer();
 
   	private final CabinetBlockListener blockListener = new CabinetBlockListener(this);
+
 	public static PermissionHandler Permissions;
 
 	public void onDisable()

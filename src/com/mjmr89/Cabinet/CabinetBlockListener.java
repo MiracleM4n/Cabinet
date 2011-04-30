@@ -45,48 +45,46 @@ public class CabinetBlockListener extends PlayerListener
 				}
 			}
 	    }
-		if((Cabinet.Permissions == null && p.isOp()) || Cabinet.Permissions.has(p, "cabinet.adjchest"))
-		  
 
-		//checks to place chest next to a double chest
-		if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && p.getItemInHand().getType().equals(Material.CHEST))
+		if((Cabinet.Permissions == null && p.isOp()) || Cabinet.Permissions.has(p, "cabinet.adjchest"))
 		{
-					
-            if(e.getClickedBlock().getType() != Material.CHEST)
-            {
+			if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && p.getItemInHand().getType().equals(Material.CHEST))
+			{
+				if(e.getClickedBlock().getType() != Material.CHEST)
+				{
             	
-                Block b = e.getClickedBlock();
-                BlockFace bf = e.getBlockFace();
-                Block airBlock;
-                airBlock = b.getFace(bf);
+					Block b = e.getClickedBlock();
+					BlockFace bf = e.getBlockFace();
+					Block airBlock;
+					airBlock = b.getFace(bf);
 			
-                int firstSlot = p.getInventory().first(Material.CHEST);
-                int num = p.getInventory().getItem(firstSlot).getAmount();
+					int firstSlot = p.getInventory().first(Material.CHEST);
+					int num = p.getInventory().getItem(firstSlot).getAmount();
                 
-                if(isNextToDoubleChest(airBlock))
-                {
-                    if(num == 1)
-                    {
-                          p.getInventory().clear(firstSlot);
-                          airBlock.setType(Material.CHEST);
-                    }     
-                    else if(num > 1)
-                    {
-                    	p.getInventory().getItem(firstSlot).setAmount(num - 1);
-                    	airBlock.setType(Material.CHEST);
-                    }
-                          
-                    else 
-                    {
-                    	p.getInventory().clear(firstSlot);
-                    	airBlock.setType(Material.CHEST);
-                    }
-                    if(num < 1)
-                    {
-                    	return;
-                    }
-                }
-            }
+					if(isNextToDoubleChest(airBlock))
+					{
+						if(num == 1)
+						{
+							p.getInventory().clear(firstSlot);
+							airBlock.setType(Material.CHEST);
+						}
+						else if(num > 1)
+						{
+							p.getInventory().getItem(firstSlot).setAmount(num - 1);
+							airBlock.setType(Material.CHEST);
+						}
+						else
+						{
+							p.getInventory().clear(firstSlot);
+							airBlock.setType(Material.CHEST);
+						}
+						if(num < 1)
+						{
+							return;
+						}
+					}
+				}
+			}
 		}
 	}
 	
