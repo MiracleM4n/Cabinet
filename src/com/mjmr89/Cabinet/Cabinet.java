@@ -18,6 +18,9 @@ public class Cabinet extends JavaPlugin
 
   public void onDisable()
   {
+	    PluginDescriptionFile pdfFile = getDescription();
+	    System.out.println(pdfFile.getName() + " version " + 
+	      pdfFile.getVersion() + " is disabled!");
   }
 
   public void onEnable()
