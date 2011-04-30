@@ -45,7 +45,9 @@ public class CabinetBlockListener extends PlayerListener
 				}
 			}
 	    }
-		
+		if((Cabinet.Permissions == null && p.isOp()) || Cabinet.Permissions.has(p, "cabinet.adjchest"))
+		  
+
 		//checks to place chest next to a double chest
 		if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && p.getItemInHand().getType().equals(Material.CHEST))
 		{
