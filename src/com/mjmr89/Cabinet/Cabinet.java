@@ -1,52 +1,37 @@
 package com.mjmr89.Cabinet;
 
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
-
 import org.bukkit.Server;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Cabinet extends JavaPlugin {
+public class Cabinet extends JavaPlugin
+{
+  static final String pluginName = "Cabinet";
 
-	// The plugin name.
-	static final String pluginName = "Cabinet";
+  final Logger log = Logger.getLogger("Minecraft");
+  final Server server = getServer();
 
-	private static final Pattern ratePattern = Pattern
-			.compile("\\s*(\\d+)\\s*:\\s*(\\d+)\\s*");
+  private final CabinetBlockListener blockListener = new CabinetBlockListener(this);
 
-	// Stuff used to interact with the server.
-	final Logger log = Logger.getLogger("Minecraft");
-	final Server server = this.getServer();
+  public void onDisable()
+  {
+  }
 
-	// Objects used by the plugin.
-	
-	private final CabinetBlockListener blockListener = new CabinetBlockListener(
-			this);
-	
-	
-	public void onDisable() {
-	}
+  public void onEnable()
+  {
+    PluginManager pm = getServer().getPluginManager();
 
-	public void onEnable() {
+    pm.registerEvent(Event.Type.PLAYER_INTERACT, this.blockListener, Event.Priority.Normal, this);
 
-		PluginManager pm = this.getServer().getPluginManager();
+    PluginDescriptionFile pdfFile = getDescription();
+    System.out.println(pdfFile.getName() + " version " + 
+      pdfFile.getVersion() + " is enabled!");
+  }
 
-		pm.registerEvent(Type.BLOCK_RIGHTCLICKED, blockListener,
-				Priority.Normal, this);
-
-		PluginDescriptionFile pdfFile = this.getDescription();
-		System.out.println(pdfFile.getName() + " version "
-				+ pdfFile.getVersion() + " is enabled!");
-
-	}
-
-	@Override
-	public void onLoad() {
-		// TODO Auto-generated method stub
-		
-	}
+  public void onLoad()
+  {
+  }
 }
