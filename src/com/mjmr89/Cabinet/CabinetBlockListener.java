@@ -2,12 +2,15 @@ package com.mjmr89.Cabinet;
 
 import net.minecraft.server.IInventory;
 import net.minecraft.server.InventoryLargeChest;
+
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
@@ -22,52 +25,65 @@ public class CabinetBlockListener extends PlayerListener
 		this.plugin = plugin;
 	}
 
-	public void onPlayerInteract(PlayerInteractEvent e)
+	public void onPlayerInteract(PlayerInteractEvent event)
 	{
-		Player p = e.getPlayer();
+		Player player = event.getPlayer();
+	    Action action = event.getAction();
 
-		if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
+		if (action == Action.RIGHT_CLICK_BLOCK)
 		{
-			e.isCancelled();
-			e.setCancelled(false);
-			Block b = e.getClickedBlock();
+			Block block = event.getClickedBlock();
+		    int type = block.getTypeId();
 
-			if (((b.getState() instanceof Chest)) && (covered(b)))
+			if (type == Material.CHEST.getId())
 			{
-				if (adjacentToChest(b))
+				if(event.useInteractedBlock() == Event.Result.DENY)
 				{
-					Block b2 = getAdjacentChestBlock(b);
-					openDoubleChest(b, b2, p);
+					event.setCancelled(true);
+					return;
 				}
+
 				else
 				{
-					openSingleChest(b, p);
+					if (((block.getState() instanceof Chest)) && (covered(block)))
+					{
+						if (adjacentToChest(block))
+						{
+							Block block2 = getAdjacentChestBlock(block);
+							openDoubleChest(block, block2, player);
+						}
+
+						else
+						{
+							openSingleChest(block, player);
+						}
+					}
 				}
 			}
 		}
 	}
 
-	void openSingleChest(Block b, Player p)
+	void openSingleChest(Block block, Player player)
 	{
-		Inventory inv = ((Chest)b.getState()).getInventory();
+		Inventory inv = ((Chest)block.getState()).getInventory();
 
 		CraftInventory cInventory = (CraftInventory)inv;
-		CraftPlayer cPlayer = (CraftPlayer)p;
+		CraftPlayer cPlayer = (CraftPlayer)player;
 		cPlayer.getHandle().a(cInventory.getInventory());
 	}
 
-	Block[] getDoubleChestOrder(Block b1, Block b2)
+	Block[] getDoubleChestOrder(Block block1, Block block2)
 	{
-		if ((b1.getX() < b2.getX()) || (b1.getZ() < b2.getZ()))
+		if ((block1.getX() < block2.getX()) || (block1.getZ() < block2.getZ()))
 		{
-			return new Block[] { b1, b2 };
+			return new Block[] { block1, block2 };
 		}
-		return new Block[] { b2, b1 };
+		return new Block[] { block2, block1 };
 	}
 
-	void openDoubleChest(Block b1, Block b2, Player p)
+	void openDoubleChest(Block block1, Block block2, Player p)
 	{
-		Block[] blocks = getDoubleChestOrder(b1, b2);
+		Block[] blocks = getDoubleChestOrder(block1, block2);
 		Chest c1 = (Chest)blocks[0].getState();
 		Chest c2 = (Chest)blocks[1].getState();
 		CraftPlayer cPlayer = (CraftPlayer)p;
@@ -84,6 +100,7 @@ public class CabinetBlockListener extends PlayerListener
 		if (adjacentToChest(b))
 		{
 			Block adjBlock = getAdjacentChestBlock(b);
+
 			if ((solidBlock(getBlockAbove(adjBlock))) || (solidBlock(getBlockAbove(b))))
 			{
 				return true;
