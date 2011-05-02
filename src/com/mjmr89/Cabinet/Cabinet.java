@@ -15,30 +15,30 @@ public class Cabinet extends JavaPlugin
 {
 	static final String pluginName = "Cabinet";
 
-	final Logger log = Logger.getLogger("Minecraft");
-	final Server server = getServer();
-
-	public static PermissionHandler Permissions;
-
-	private final CabinetBlockListener blockListener = new CabinetBlockListener(this);
+  	final Logger log = Logger.getLogger("Minecraft");
+  	final Server server = getServer();
+  	
+  	public static PermissionHandler Permissions;
+  	
+  	private final CabinetPlayerListener playerlistener = new CabinetPlayerListener(this);
 
 	public void onDisable()
 	{
 		PluginDescriptionFile pdfFile = getDescription();
-		System.out.println(pdfFile.getName() + " version " +
+		System.out.println(pdfFile.getName() + " version " + 
 				pdfFile.getVersion() + " is disabled!");
 	}
 
 	public void onEnable()
 	{
 		PluginManager pm = getServer().getPluginManager();
-
+		
 		setupPermissions();
-
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.blockListener, Event.Priority.Monitor, this);
-
+		
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.playerlistener, Event.Priority.Monitor, this);
+		
 		PluginDescriptionFile pdfFile = getDescription();
-		System.out.println("[Cabinet]" + " version " +
+		System.out.println("[Cabinet]" + " version " + 
 				pdfFile.getVersion() + " is enabled!");
 	}
 
@@ -46,19 +46,19 @@ public class Cabinet extends JavaPlugin
 	{
 	}
 
-	private void setupPermissions()
+	private void setupPermissions() 
 	{
 		Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
 
-		if (Cabinet.Permissions == null)
+		if (Cabinet.Permissions == null) 
 		{
-			if (test != null)
+			if (test != null) 
 			{
 				Cabinet.Permissions = ((Permissions)test).getHandler();
 				System.out.println("[Cabinet] Permissions found hooking in.");
-			}
-
-			else
+			} 
+			
+			else 
 			{
 				System.out.println("[Cabinet] Permissions plugin not found, defaulting to ops.txt.");
 			}
