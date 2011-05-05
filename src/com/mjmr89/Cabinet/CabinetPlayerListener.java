@@ -47,10 +47,9 @@ public class CabinetPlayerListener extends PlayerListener
 					event.setCancelled(true);
 					return;
 				}
-
 				else
 				{
-					if (((block.getState() instanceof Chest)) && (covered(block)))
+					if (((block.getState() instanceof Chest)) && (covered(block) || tripleChest(block)))
 					{
 						if (adjacentToChest(block))
 						{
@@ -61,6 +60,7 @@ public class CabinetPlayerListener extends PlayerListener
 						{
 							openSingleChest(block, player);
 						}
+						event.setCancelled(true);
 					}
 				}
 			}
@@ -220,6 +220,27 @@ public class CabinetPlayerListener extends PlayerListener
 			}
 		}
 		return false;
+	}
+
+	boolean tripleChest(Block block) {
+		int count = 1;
+		if (block.getRelative(1, 0, 0).getType() == Material.CHEST)
+		{
+			count++;
+		}
+		if (block.getRelative(-1, 0, 0).getType() == Material.CHEST)
+		{
+			count++;
+		}
+		if (block.getRelative(0, 0, 1).getType() == Material.CHEST)
+		{
+			count++;
+		}
+		if (block.getRelative(0, 0, -1).getType() == Material.CHEST)
+		{
+			count++;
+		}
+		return count > 2;
 	}
 
 	Block getBlockAbove(Block block) 
