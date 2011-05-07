@@ -112,7 +112,7 @@ public class CabinetPlayerListener extends PlayerListener
 					}
 					else
 					{
-						plugin.getServer().broadcastMessage(Colors.Red + "You Don't Have Permissions To Place Over 2 Adjacent Chests");
+						player.sendMessage(Colors.Red + "You Don't Have Permissions To Place Over 2 Adjacent Chests");
 					}
 				}
 			}
