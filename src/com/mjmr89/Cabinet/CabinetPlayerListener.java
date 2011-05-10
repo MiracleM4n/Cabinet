@@ -5,6 +5,7 @@ import net.minecraft.server.InventoryLargeChest;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -18,8 +19,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.Inventory;
-
-import com.mjmr89.Cabinet.Colors;
 
 public class CabinetPlayerListener extends PlayerListener 
 {
@@ -83,7 +82,7 @@ public class CabinetPlayerListener extends PlayerListener
 
 				if(isNextToDoubleChest(airBlock))
 				{
-					if((Cabinet.Permissions == null && player.isOp()) || Cabinet.Permissions.has(player, "cabinet.adjchest"))
+					if((Cabinet.Permissions == null && player.isOp()) || (Cabinet.Permissions != null && Cabinet.Permissions.has(player, "cabinet.adjchest")))
 					{
 						if(num == 1 && inf > 64)
 						{
@@ -112,7 +111,7 @@ public class CabinetPlayerListener extends PlayerListener
 					}
 					else
 					{
-						player.sendMessage(Colors.Red + "You Don't Have Permissions To Place Over 2 Adjacent Chests");
+						player.sendMessage(ChatColor.RED + "You Don't Have Permissions To Place Over 2 Adjacent Chests");
 					}
 				}
 			}
