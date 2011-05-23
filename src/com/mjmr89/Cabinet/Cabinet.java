@@ -11,8 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
-public class Cabinet extends JavaPlugin
-{
+public class Cabinet extends JavaPlugin {
 	static final String pluginName = "Cabinet";
 
   	final Logger log = Logger.getLogger("Minecraft");
@@ -22,15 +21,13 @@ public class Cabinet extends JavaPlugin
   	
   	private final CabinetPlayerListener playerlistener = new CabinetPlayerListener(this);
 
-	public void onDisable()
-	{
+	public void onDisable() {
 		PluginDescriptionFile pdfFile = getDescription();
 		System.out.println(pdfFile.getName() + " version " + 
 				pdfFile.getVersion() + " is disabled!");
 	}
 
-	public void onEnable()
-	{
+	public void onEnable() {
 		PluginManager pm = getServer().getPluginManager();
 		
 		setupPermissions();
@@ -42,24 +39,14 @@ public class Cabinet extends JavaPlugin
 				pdfFile.getVersion() + " is enabled!");
 	}
 
-	public void onLoad()
-	{
-	}
-
-	private void setupPermissions() 
-	{
+	private void setupPermissions() {
 		Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
 
-		if (Cabinet.Permissions == null) 
-		{
-			if (test != null) 
-			{
+		if (Cabinet.Permissions == null) {
+			if (test != null) {
 				Cabinet.Permissions = ((Permissions)test).getHandler();
 				System.out.println("[Cabinet] Permissions found hooking in.");
-			} 
-			
-			else 
-			{
+			} else {
 				System.out.println("[Cabinet] Permissions plugin not found, defaulting to ops.txt.");
 			}
 		}
