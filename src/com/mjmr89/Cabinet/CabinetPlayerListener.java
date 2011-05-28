@@ -71,12 +71,13 @@ public class CabinetPlayerListener extends PlayerListener {
 				BlockFace blockface = event.getBlockFace();
 				Block airBlock;
 				airBlock = block.getFace(blockface);
-
+				
+				boolean nearChest = false;
 
 				int firstSlot = player.getInventory().first(Material.CHEST);
 				int num = player.getInventory().getItem(firstSlot).getAmount();
 				int inf = player.getInventory().getItem(firstSlot).getMaxStackSize();
-
+				
 				if(isNextToDoubleChest(airBlock)) {
 					if((Cabinet.Permissions == null && player.isOp()) || (Cabinet.Permissions != null && Cabinet.Permissions.has(player, "cabinet.adjchest"))) {
 						if(num == 1 && inf > 64) {
@@ -99,6 +100,25 @@ public class CabinetPlayerListener extends PlayerListener {
 					} else {
 						player.sendMessage(ChatColor.RED + "You Don't Have Permissions To Place Over 2 Adjacent Chests");
 					}
+				} else if (block.getType() != Material.CHEST) {
+					if (airBlock.getRelative(BlockFace.UP).getType() != Material.AIR) {
+						nearChest = true;
+					} else if (airBlock.getRelative(BlockFace.DOWN).getType() == Material.CHEST) {
+						nearChest = true;
+					} else {
+						nearChest = false;
+					}
+				}
+				if (nearChest == true) {	
+					if((Cabinet.Permissions == null && player.isOp()) || (Cabinet.Permissions != null && Cabinet.Permissions.has(player, "cabinet.abovechest"))) {
+						nearChest = false;
+						return;
+					} else {
+						event.setCancelled(true);
+						nearChest = false;
+						player.sendMessage(ChatColor.RED + "You Don't Have Permissions To Place Covered Chests");
+						return;
+					}
 				}
 			}
 		}
@@ -107,18 +127,12 @@ public class CabinetPlayerListener extends PlayerListener {
 	boolean isNextToDoubleChest(Block block) {
 		ArrayList<Block> list = getAdjacentChestBlocks(block);
 		ArrayList<Block> list2;
-		
-		//plugin.getServer().broadcastMessage("list size: " + list.size());
-		
 		if(list.size() > 2) {
 			return false;
 		}
-		
 		if(list.size() > 0) {
 			for(Block b : list) {
 				list2 = getAdjacentChestBlocks(b);
-				//plugin.getServer().broadcastMessage("list2 size: " + list2.size());
-				
 				if(list2.size()>0) {
 					return true;
 				}
