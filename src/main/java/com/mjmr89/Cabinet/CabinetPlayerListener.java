@@ -49,7 +49,7 @@ public class CabinetPlayerListener extends PlayerListener {
 						}
 						event.setCancelled(true);
 					}
-					if((Cabinet.Permissions == null && player.isOp()) || (Cabinet.Permissions != null && Cabinet.Permissions.has(player, "cabinet.covered"))) {
+					if (plugin.checkPermissions(player, "cabinet.covered")) {
 						if (((block.getState() instanceof Chest)) && (covered(block))) {
 							if (adjacentToChest(block)) {
 								Block block2 = getAdjacentChestBlock(block);
@@ -70,7 +70,7 @@ public class CabinetPlayerListener extends PlayerListener {
 				Block block = event.getClickedBlock();
 				BlockFace blockface = event.getBlockFace();
 				Block airBlock;
-				airBlock = block.getFace(blockface);
+				airBlock = block.getRelative(blockface);
 				
 				boolean nearChest = false;
 
@@ -79,7 +79,7 @@ public class CabinetPlayerListener extends PlayerListener {
 				int inf = player.getInventory().getItem(firstSlot).getMaxStackSize();
 				
 				if(isNextToDoubleChest(airBlock)) {
-					if((Cabinet.Permissions == null && player.isOp()) || (Cabinet.Permissions != null && Cabinet.Permissions.has(player, "cabinet.adjchest"))) {
+					if (plugin.checkPermissions(player, "cabinet.adjchest")) {
 						if(num == 1 && inf > 64) {
 							player.getInventory().getItem(firstSlot).setAmount(0);
 							airBlock.setType(Material.CHEST);
@@ -101,23 +101,13 @@ public class CabinetPlayerListener extends PlayerListener {
 						player.sendMessage(ChatColor.RED + "You Don't Have Permissions To Place Over 2 Adjacent Chests");
 					}
 				} else if (block.getType() != Material.CHEST) {
-					if (airBlock.getRelative(BlockFace.UP).getType() != Material.AIR) {
-						nearChest = true;
-					} else if (airBlock.getRelative(BlockFace.DOWN).getType() == Material.CHEST) {
-						nearChest = true;
-					} else {
-						nearChest = false;
-					}
+                    nearChest = (airBlock.getRelative(BlockFace.UP).getType() != Material.AIR) ||
+                            (airBlock.getRelative(BlockFace.DOWN).getType() == Material.CHEST);
 				}
-				if (nearChest == true) {	
-					if((Cabinet.Permissions == null && player.isOp()) || (Cabinet.Permissions != null && Cabinet.Permissions.has(player, "cabinet.abovechest"))) {
-						nearChest = false;
-						return;
-					} else {
+				if (nearChest) {
+					if (!plugin.checkPermissions(player, "cabinet.abovechest")) {
 						event.setCancelled(true);
-						nearChest = false;
 						player.sendMessage(ChatColor.RED + "You Don't Have Permissions To Place Covered Chests");
-						return;
 					}
 				}
 			}
@@ -163,7 +153,7 @@ public class CabinetPlayerListener extends PlayerListener {
 
 		CraftInventory cInventory = (CraftInventory) inv;
 		CraftPlayer cPlayer = (CraftPlayer) player;
-		cPlayer.getHandle().a((IInventory) cInventory.getInventory());
+		cPlayer.getHandle().a(cInventory.getInventory());
 	}
 	
 	Block[] getDoubleChestOrder(Block block1, Block block2){
@@ -183,7 +173,7 @@ public class CabinetPlayerListener extends PlayerListener {
 
 		CraftInventory cInventory1 = (CraftInventory) chest1.getInventory();
 		CraftInventory cInventory2 = (CraftInventory) chest2.getInventory();
-		IInventory IChest = (IInventory) new InventoryLargeChest("Large chest",
+		IInventory IChest = new InventoryLargeChest("Large chest",
 				cInventory1.getInventory(), cInventory2.getInventory());
 		cPlayer.getHandle().a(IChest);
 	}
@@ -224,11 +214,8 @@ public class CabinetPlayerListener extends PlayerListener {
 	}
 
 	boolean adjacentToChest(Block block) {
-		if (getAdjacentChestBlock(block) == null) {
-			return false;
-		}
-		return true;
-	}
+        return getAdjacentChestBlock(block) != null;
+    }
 
 	Block getAdjacentChestBlock(Block block) {
 		World w = block.getWorld();
@@ -243,25 +230,6 @@ public class CabinetPlayerListener extends PlayerListener {
 			}
 		}
 		return null;
-	}
-
-	boolean isPartiallyCovered(Block block) {
-		int x = block.getX();
-		int y = block.getY();
-		int z = block.getZ();
-		World w = block.getWorld();
-
-		Block[] bAboves = { w.getBlockAt(x + 1, y + 1, z),
-				w.getBlockAt(x - 1, y + 1, z), w.getBlockAt(x, y + 1, z + 1),
-				w.getBlockAt(x, y + 1, z - 1) };
-		for (int i = 0; i < 4; i++) {
-			if (solidBlock(bAboves[i])
-					&& w.getBlockAt(bAboves[i].getX(), bAboves[i].getY() - 1,
-							bAboves[i].getZ()).getState() instanceof Chest) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	boolean solidBlock(Block block) {
