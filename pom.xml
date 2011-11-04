@@ -20,8 +20,8 @@
             </snapshots>
         </repository>
         <repository>
-            <id>blockface-repo</id>
-            <url>http://repo.blockface.org/repository</url>
+            <id>cward-repo</id>
+            <url>http://repo.chrisgward.com/repository</url>
             <releases>
                 <updatePolicy>always</updatePolicy>
             </releases>
@@ -79,13 +79,6 @@
             <groupId>org.anjocaido</groupId>
             <artifactId>GroupManager</artifactId>
             <version>1.0.alpha-5</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>ru.tehkode</groupId>
-            <artifactId>PermissionsEx</artifactId>
-            <version>1.14</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>

@@ -15,9 +15,6 @@ import org.anjocaido.groupmanager.permissions.AnjoPermissionsHandler;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
-import ru.tehkode.permissions.PermissionManager;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
-
 public class Cabinet extends JavaPlugin {
     PluginManager pm;
     PluginDescriptionFile pdfFile;
@@ -34,10 +31,6 @@ public class Cabinet extends JavaPlugin {
     // GroupManager
     public AnjoPermissionsHandler gmPermissions;
     Boolean gmPermissionsB = false;
-
-    // PermissionsEX
-    public PermissionManager pexPermissions;
-    Boolean PEXB = false;
 
     // Configuration
     YamlConfiguration cConfig = null;
@@ -56,7 +49,7 @@ public class Cabinet extends JavaPlugin {
         pListener = new CabinetPlayerListener(this);
         cListener = new CConfigListener(this);
 
-		setupPEX();
+		setupPermissions();
 
         setupConfigs();
 
@@ -72,19 +65,6 @@ public class Cabinet extends JavaPlugin {
 		log("[" + pdfFile.getName() + "]" + " version " +
                 pdfFile.getVersion() + " is disabled!");
 	}
-
-    protected void setupPEX() {
-        Plugin pexTest = pm.getPlugin("PermissionsEx");
-
-        if (pexTest != null) {
-            pexPermissions = PermissionsEx.getPermissionManager();
-            PEXB = true;
-            log("[" + pdfFile.getName() + "] PermissionsEx " + (pexTest.getDescription().getVersion()) + " found hooking in.");
-        } else {
-            PEXB = false;
-            setupPermissions();
-        }
-    }
 
     protected void setupPermissions() {
         Plugin permTest = pm.getPlugin("Permissions");
@@ -109,7 +89,7 @@ public class Cabinet extends JavaPlugin {
             log("[" + pdfFile.getName() + "] GroupManager " + (permTest.getDescription().getVersion()) + " found hooking in.");
         } else {
             gmPermissionsB = false;
-            log("[" + pdfFile.getName() + "] No Permissions plugins were found defaulting to permissions.yml/info.yml");
+            log("[" + pdfFile.getName() + "] No Legacy Permissions plugins were found defaulting to SuperPerms.");
         }
     }
 
@@ -126,10 +106,6 @@ public class Cabinet extends JavaPlugin {
             if (gmPermissions.has(player, node))
                 return true;
 
-        if (PEXB)
-            if (pexPermissions.has(player, node))
-                return true;
-
         return player.hasPermission(node) || player.isOp();
 
     }
@@ -142,10 +118,6 @@ public class Cabinet extends JavaPlugin {
 
         if (gmPermissionsB)
             if (gmPermissions.has(player, node))
-                return true;
-
-        if (PEXB)
-            if (pexPermissions.has(player, node))
                 return true;
 
         if (useOp)
