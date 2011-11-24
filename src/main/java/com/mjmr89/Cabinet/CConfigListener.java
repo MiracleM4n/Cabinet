@@ -53,8 +53,6 @@ public class CConfigListener {
             try {
                 config.save(plugin.cConfigF);
             } catch (IOException ignored) {}
-
-            plugin.log("[" + plugin.pdfFile.getName() + "]" + " config.yml has been updated.");
         }
     }
 

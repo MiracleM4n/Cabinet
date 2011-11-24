@@ -20,12 +20,11 @@ public class Cabinet extends JavaPlugin {
     PluginDescriptionFile pdfFile;
 
     // Listeners
-  	CabinetPlayerListener pListener;
-  	CConfigListener cListener;
+    CabinetPlayerListener pListener;
+    CConfigListener cListener;
 
     // Permissions
     public PermissionHandler permissions;
-    Boolean permissions3;
     Boolean permissionsB = false;
 
     // GroupManager
@@ -39,8 +38,8 @@ public class Cabinet extends JavaPlugin {
     // Boolean
     Boolean usePermissions = true;
 
-	public void onEnable() {
-		pm = getServer().getPluginManager();
+    public void onEnable() {
+        pm = getServer().getPluginManager();
         pdfFile = getDescription();
 
         cConfigF = new File(getDataFolder(), "config.yml");
@@ -49,22 +48,20 @@ public class Cabinet extends JavaPlugin {
         pListener = new CabinetPlayerListener(this);
         cListener = new CConfigListener(this);
 
-		setupPermissions();
+        setupPermissions();
 
         setupConfigs();
 
         pm.registerEvent(Event.Type.PLAYER_INTERACT, this.pListener, Event.Priority.Monitor, this);
 
-		PluginDescriptionFile pdfFile = getDescription();
-		log("[" + pdfFile.getName() + "]" + " version " +
-				pdfFile.getVersion() + " is enabled!");
-	}
+        PluginDescriptionFile pdfFile = getDescription();
 
-	public void onDisable() {
-		PluginDescriptionFile pdfFile = getDescription();
-		log("[" + pdfFile.getName() + "]" + " version " +
-                pdfFile.getVersion() + " is disabled!");
-	}
+        log("[" + pdfFile.getName() + "]" + " version " + pdfFile.getVersion() + " is enabled!");
+    }
+
+    public void onDisable() {
+        log("[" + pdfFile.getName() + "]" + " version " + pdfFile.getVersion() + " is disabled!");
+    }
 
     protected void setupPermissions() {
         Plugin permTest = pm.getPlugin("Permissions");
@@ -72,11 +69,9 @@ public class Cabinet extends JavaPlugin {
         if(permTest != null) {
             permissions = ((Permissions) permTest).getHandler();
             permissionsB = true;
-            permissions3 = permTest.getDescription().getVersion().startsWith("3");
             log("[" + pdfFile.getName() + "] Permissions " + (permTest.getDescription().getVersion()) + " found hooking in.");
         } else {
             permissionsB = false;
-            permissions3 = false;
             setupGroupManager();
         }
     }
@@ -93,25 +88,15 @@ public class Cabinet extends JavaPlugin {
         }
     }
 
-    public void log(String loggedString) {
-        getServer().getConsoleSender().sendMessage(loggedString);
-    }
-
-    public Boolean checkPermissions(Player player, String node) {
-        if (permissionsB)
-            if (permissions.has(player, node))
-                return true;
-
-        if (gmPermissionsB)
-            if (gmPermissions.has(player, node))
-                return true;
-
-        return player.hasPermission(node) || player.isOp();
-
+    public void log(Object loggedObject) {
+        getServer().getConsoleSender().sendMessage(loggedObject.toString());
     }
 
     @SuppressWarnings("unused")
     public Boolean checkPermissions(Player player, String node, Boolean useOp) {
+        if (!usePermissions)
+            return true;
+
         if (permissionsB)
             if (permissions.has(player, node))
                 return true;
