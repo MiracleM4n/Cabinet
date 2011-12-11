@@ -7,12 +7,12 @@ import java.io.File;
 import java.io.IOException;
 
 public class CConfigListener {
-        Cabinet plugin;
-        Boolean hasChanged = false;
+    Cabinet plugin;
+    Boolean hasChanged = false;
 
-        public CConfigListener(Cabinet plugin) {
-            this.plugin = plugin;
-        }
+    public CConfigListener(Cabinet plugin) {
+        this.plugin = plugin;
+    }
 
     protected void loadConfig() {
         YamlConfiguration config = plugin.cConfig;
