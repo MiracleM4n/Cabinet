@@ -10,8 +10,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import org.anjocaido.groupmanager.permissions.AnjoPermissionsHandler;
-
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
@@ -26,10 +24,6 @@ public class Cabinet extends JavaPlugin {
     // Permissions
     public PermissionHandler permissions;
     Boolean permissionsB = false;
-
-    // GroupManager
-    public AnjoPermissionsHandler gmPermissions;
-    Boolean gmPermissionsB = false;
 
     // Configuration
     YamlConfiguration cConfig = null;
@@ -63,7 +57,7 @@ public class Cabinet extends JavaPlugin {
         log("[" + pdfFile.getName() + "]" + " version " + pdfFile.getVersion() + " is disabled!");
     }
 
-    protected void setupPermissions() {
+    void setupPermissions() {
         Plugin permTest = pm.getPlugin("Permissions");
 
         if(permTest != null) {
@@ -72,24 +66,15 @@ public class Cabinet extends JavaPlugin {
             log("[" + pdfFile.getName() + "] Permissions " + (permTest.getDescription().getVersion()) + " found hooking in.");
         } else {
             permissionsB = false;
-            setupGroupManager();
-        }
-    }
-
-    protected void setupGroupManager() {
-        Plugin permTest = pm.getPlugin("GroupManager");
-
-        if (permTest != null) {
-            gmPermissionsB = true;
-            log("[" + pdfFile.getName() + "] GroupManager " + (permTest.getDescription().getVersion()) + " found hooking in.");
-        } else {
-            gmPermissionsB = false;
-            log("[" + pdfFile.getName() + "] No Legacy Permissions plugins were found defaulting to SuperPerms.");
         }
     }
 
     public void log(Object loggedObject) {
-        getServer().getConsoleSender().sendMessage(loggedObject.toString());
+        try {
+            getServer().getConsoleSender().sendMessage(loggedObject.toString());
+        } catch (IncompatibleClassChangeError ignored) {
+            System.out.println(loggedObject);
+        }
     }
 
     @SuppressWarnings("unused")
@@ -99,10 +84,6 @@ public class Cabinet extends JavaPlugin {
 
         if (permissionsB)
             if (permissions.has(player, node))
-                return true;
-
-        if (gmPermissionsB)
-            if (gmPermissions.has(player, node))
                 return true;
 
         if (useOp)
