@@ -21,10 +21,6 @@ public class Cabinet extends JavaPlugin {
     CabinetPlayerListener pListener;
     CConfigListener cListener;
 
-    // Permissions
-    public PermissionHandler permissions;
-    Boolean permissionsB = false;
-
     // Configuration
     YamlConfiguration cConfig = null;
     File cConfigF = null;
@@ -42,11 +38,9 @@ public class Cabinet extends JavaPlugin {
         pListener = new CabinetPlayerListener(this);
         cListener = new CConfigListener(this);
 
-        setupPermissions();
-
         setupConfigs();
 
-        pm.registerEvent(Event.Type.PLAYER_INTERACT, this.pListener, Event.Priority.Monitor, this);
+        pm.registerEvents(pListener, this);
 
         PluginDescriptionFile pdfFile = getDescription();
 
@@ -57,34 +51,14 @@ public class Cabinet extends JavaPlugin {
         log("[" + pdfFile.getName() + "]" + " version " + pdfFile.getVersion() + " is disabled!");
     }
 
-    void setupPermissions() {
-        Plugin permTest = pm.getPlugin("Permissions");
-
-        if(permTest != null) {
-            permissions = ((Permissions) permTest).getHandler();
-            permissionsB = true;
-            log("[" + pdfFile.getName() + "] Permissions " + (permTest.getDescription().getVersion()) + " found hooking in.");
-        } else {
-            permissionsB = false;
-        }
-    }
-
     public void log(Object loggedObject) {
-        try {
-            getServer().getConsoleSender().sendMessage(loggedObject.toString());
-        } catch (IncompatibleClassChangeError ignored) {
-            System.out.println(loggedObject);
-        }
+        System.out.println(loggedObject);
     }
 
     @SuppressWarnings("unused")
     public Boolean checkPermissions(Player player, String node, Boolean useOp) {
         if (!usePermissions)
             return true;
-
-        if (permissionsB)
-            if (permissions.has(player, node))
-                return true;
 
         if (useOp)
             return player.isOp();

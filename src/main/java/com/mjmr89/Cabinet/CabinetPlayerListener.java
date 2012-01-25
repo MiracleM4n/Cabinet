@@ -15,18 +15,20 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.Inventory;
 
-public class CabinetPlayerListener extends PlayerListener {
+public class CabinetPlayerListener implements Listener {
     Cabinet plugin;
 
     CabinetPlayerListener(Cabinet plugin) {
         this.plugin = plugin;
     }
 
+    @EventHandler(event = PlayerInteractEvent.class)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
