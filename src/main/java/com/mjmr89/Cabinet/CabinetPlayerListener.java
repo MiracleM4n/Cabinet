@@ -28,7 +28,7 @@ public class CabinetPlayerListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(event = PlayerInteractEvent.class)
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
