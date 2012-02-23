@@ -46,9 +46,7 @@ public class CConfigListener {
         checkOption(config, "use-Permissions", plugin.usePermissions);
 
         if (hasChanged) {
-            configO.header(
-                    "Cabinet configuration file"
-            );
+            configO.header("Cabinet configuration file");
 
             try {
                 config.save(plugin.cConfigF);

@@ -130,7 +130,8 @@ public class CabinetPlayerListener implements Listener {
         if(list.size() > 0)
             for(Block b : list) {
                 list2 = getAdjacentChestBlocks(b);
-                if(list2.size()>0)
+
+                if(list2.size() > 0)
                     return true;
             }
 

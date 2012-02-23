@@ -12,10 +12,6 @@ public class Cabinet extends JavaPlugin {
     PluginManager pm;
     PluginDescriptionFile pdfFile;
 
-    // Listeners
-    CabinetPlayerListener pListener;
-    CConfigListener cListener;
-
     // Configuration
     YamlConfiguration cConfig = null;
     File cConfigF = null;
@@ -30,12 +26,9 @@ public class Cabinet extends JavaPlugin {
         cConfigF = new File(getDataFolder(), "config.yml");
         cConfig = YamlConfiguration.loadConfiguration(cConfigF);
 
-        pListener = new CabinetPlayerListener(this);
-        cListener = new CConfigListener(this);
-
         setupConfigs();
 
-        pm.registerEvents(pListener, this);
+        pm.registerEvents(new CabinetPlayerListener(this), this);
 
         PluginDescriptionFile pdfFile = getDescription();
 
@@ -50,7 +43,6 @@ public class Cabinet extends JavaPlugin {
         System.out.println(loggedObject);
     }
 
-    @SuppressWarnings("unused")
     public Boolean checkPermissions(Player player, String node, Boolean useOp) {
         if (!usePermissions)
             return true;
@@ -63,7 +55,7 @@ public class Cabinet extends JavaPlugin {
     }
 
     protected void setupConfigs() {
-        cListener.checkConfig();
-        cListener.loadConfig();
+        new CConfigListener(this).checkConfig();
+        new CConfigListener(this).loadConfig();
     }
 }
