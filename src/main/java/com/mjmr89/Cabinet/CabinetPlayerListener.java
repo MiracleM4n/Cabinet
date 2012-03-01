@@ -164,7 +164,7 @@ public class CabinetPlayerListener implements Listener {
         CraftInventory cInventory = (CraftInventory) inv;
         CraftPlayer cPlayer = (CraftPlayer) player;
 
-        cPlayer.getHandle().a(cInventory.getInventory());
+        cPlayer.getHandle().openContainer(cInventory.getInventory());
     }
 
     Block[] getDoubleChestOrder(Block block1, Block block2){
@@ -190,7 +190,7 @@ public class CabinetPlayerListener implements Listener {
         IInventory IChest = new InventoryLargeChest("Large chest",
                 cInventory1.getInventory(), cInventory2.getInventory());
 
-        cPlayer.getHandle().a(IChest);
+        cPlayer.getHandle().openContainer(IChest);
     }
 
     boolean covered(Block block) {
