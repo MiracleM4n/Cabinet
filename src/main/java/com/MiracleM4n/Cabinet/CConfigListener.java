@@ -1,4 +1,4 @@
-package com.mjmr89.Cabinet;
+package com.miraclem4n.cabinet;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.file.YamlConfigurationOptions;

@@ -1,4 +1,4 @@
-package com.mjmr89.Cabinet;
+package com.miraclem4n.cabinet;
 
 import net.minecraft.server.IInventory;
 import net.minecraft.server.InventoryLargeChest;

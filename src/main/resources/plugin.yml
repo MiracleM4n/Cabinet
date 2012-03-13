@@ -1,4 +1,4 @@
 name: Cabinet
-main: com.mjmr89.Cabinet.Cabinet
-author: mjmr89, MiracleM4n
+main: com.miraclem4n.cabinet.Cabinet
+author: MiracleM4n
 version: ${m.version}-${build.number}-${p.version}
