@@ -1,16 +1,17 @@
-package com.miraclem4n.cabinet;
+package com.miraclem4n.cabinet.config;
 
+import com.miraclem4n.cabinet.Cabinet;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.file.YamlConfigurationOptions;
 
 import java.io.File;
 import java.io.IOException;
 
-public class CConfigListener {
+public class ConfigUtil {
     Cabinet plugin;
     Boolean hasChanged = false;
 
-    public CConfigListener(Cabinet plugin) {
+    public ConfigUtil(Cabinet plugin) {
         this.plugin = plugin;
     }
 

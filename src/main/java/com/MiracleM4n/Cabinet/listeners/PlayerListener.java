@@ -1,5 +1,6 @@
-package com.miraclem4n.cabinet;
+package com.miraclem4n.cabinet.listeners;
 
+import com.miraclem4n.cabinet.Cabinet;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.InventoryLargeChest;
 
@@ -21,10 +22,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 
-public class CabinetPlayerListener implements Listener {
+public class PlayerListener implements Listener {
     Cabinet plugin;
 
-    CabinetPlayerListener(Cabinet plugin) {
+    PlayerListener(Cabinet plugin) {
         this.plugin = plugin;
     }
 
