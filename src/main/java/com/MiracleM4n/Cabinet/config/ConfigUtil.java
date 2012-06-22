@@ -2,63 +2,53 @@ package com.miraclem4n.cabinet.config;
 
 import com.miraclem4n.cabinet.Cabinet;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.configuration.file.YamlConfigurationOptions;
 
 import java.io.File;
-import java.io.IOException;
 
 public class ConfigUtil {
-    Cabinet plugin;
-    Boolean hasChanged = false;
+    static YamlConfiguration config;
+    static File file;
 
-    public ConfigUtil(Cabinet plugin) {
-        this.plugin = plugin;
+    public static void initialize() {
+        load();
     }
 
-    protected void loadConfig() {
-        YamlConfiguration config = plugin.cConfig;
+    public static void load() {
+        file = new File("plugins/Cabinet/config.yml");
 
-        plugin.usePermissions = config.getBoolean("use-Permissions", plugin.usePermissions);
+        config = YamlConfiguration.loadConfiguration(file);
+
+        config.options().indent(4);
+        config.options().header("Cabinet Config");
+
+        loadDefaults();
     }
 
-    protected void defaultConfig() {
-        YamlConfiguration config = plugin.cConfig;
-        YamlConfigurationOptions configO = config.options();
+    private static void loadDefaults() {
+        checkOption("use-Permissions", Cabinet.usePermissions);
+    }
 
-        configO.header(
-            "Cabinet configuration file"
-        );
+    public static void set(String key, Object obj) {
+        config.set(key, obj);
 
-        config.set("use-Permissions", plugin.usePermissions);
+        save();
+    }
 
+    public static Boolean save() {
         try {
-            config.save(plugin.cConfigF);
-        } catch (IOException ignored) {}
-    }
-
-    protected void checkConfig() {
-        YamlConfiguration config = plugin.cConfig;
-        YamlConfigurationOptions configO = config.options();
-
-        if (!(new File(plugin.getDataFolder(), "config.yml")).exists()) {
-            defaultConfig();
-        }
-
-        checkOption(config, "use-Permissions", plugin.usePermissions);
-
-        if (hasChanged) {
-            configO.header("Cabinet configuration file");
-
-            try {
-                config.save(plugin.cConfigF);
-            } catch (IOException ignored) {}
+            config.save(file);
+            return true;
+        } catch (Exception ignored) {
+            return false;
         }
     }
 
-    protected void checkOption(YamlConfiguration config, String option, Object dOption) {
-        if (config.get(option) == null) {
-            config.set(option, dOption);
-            hasChanged = true;
-        }
+    public static YamlConfiguration getConfig() {
+        return config;
+    }
+
+    private static void checkOption(String option, Object defValue) {
+        if (!config.isSet(option))
+            set(option, defValue);
     }
 }
