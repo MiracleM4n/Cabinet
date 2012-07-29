@@ -1,11 +1,8 @@
 package com.miraclem4n.cabinet;
 
-import java.io.File;
-
 import com.miraclem4n.cabinet.config.ConfigUtil;
 import com.miraclem4n.cabinet.listeners.PlayerListener;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,8 +35,8 @@ public class Cabinet extends JavaPlugin {
         System.out.println(loggedObject);
     }
 
-    public Boolean checkPermissions(Player player, String node) {
-        return !usePermissions || player.hasPermission(node);
+    public Boolean checkPermissions(CommandSender sender, String node) {
+        return !usePermissions || sender.hasPermission(node);
     }
 
     protected void setupConfigs() {
